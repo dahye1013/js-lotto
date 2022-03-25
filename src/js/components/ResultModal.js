@@ -1,6 +1,7 @@
+import { LOTTO_MODAL } from '../constants/selectTarget.js';
 //TODO: - STEP2
-const ResultModal = () => {
-  return `<div class="modal">
+const ResultModal = ($parent, { onclick }) => {
+  const template = `<div class="modal ${LOTTO_MODAL}">
         <div class="modal-inner p-10">
           <div class="modal-close">
             <svg viewbox="0 0 40 40">
@@ -53,6 +54,10 @@ const ResultModal = () => {
           </div>
         </div>
       </div>`;
+
+  const $el = document.createElement('div');
+  $el.innerHTML = template;
+  $parent.replaceWith($el);
 };
 
 export default ResultModal;

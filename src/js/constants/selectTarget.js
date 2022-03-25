@@ -16,3 +16,6 @@ export const LOTTO_FORM = 'lotto-form';
 export const LOTTO_FORM__WINNING_NUMBER = 'lotto-form__winning-number';
 export const LOTTO_FORM__BUTTON = 'lotto-form__button';
 
+// lotto result modal
+export const LOTTO_MODAL = 'lotto-modal';
+

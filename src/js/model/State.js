@@ -2,7 +2,7 @@ import PriceModel from './PriceModel.js';
 import LottoModel from './LottoModel.js';
 
 import { LOTTO_PURCHASE_UNIT } from '../constants/unit.js';
-import { PRICE_FORM__INPUT, LOTTO_SECTION } from '../constants/selectTarget.js';
+import { PRICE_FORM__INPUT, LOTTO_MODAL, LOTTO_FORM__WINNING_NUMBER } from '../constants/selectTarget.js';
 import { $, $$ } from '../util/dom.js';
 
 export default class State {
@@ -31,13 +31,15 @@ export default class State {
     displayWinningResultModal: (e) => {
       e.preventDefault();
       try {
-        const winningNumbers = [];
+        const inputNumbers = [];
         $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
-          winningNumbers.push($el.value);
+          inputNumbers.push($el.value);
         });
-        LottoModel.validators.isDuplicatedWinningNumber(inputPrice);
+        LottoModel.validators.isDuplicatedWinningNumber(inputNumbers);
+        $(LOTTO_MODAL).classList.add('open');
       } catch (err) {
         alert(err.message);
+        console.log(err);
       }
     },
   };

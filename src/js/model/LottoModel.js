@@ -25,7 +25,7 @@ export default class LottoModel {
     isValidQuantity: (totalQuantity) => {
       if (totalQuantity > LOTTO_PURCHASE_MAX_QUANTITY) throw new Error(ERR_MESSAGE.OVER_LIMIT_QUANTITY);
     },
-    isDuplicated: (inputNumbers) => {
+    isDuplicatedWinningNumber: (inputNumbers) => {
       if (new Set(inputNumbers).size < LOTTO_NUMBER_SIZE) throw new Error(ERR_MESSAGE.DUPLICATED_NUMBERS);
     },
   };

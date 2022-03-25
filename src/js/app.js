@@ -8,7 +8,7 @@ import ResultModal from './components/ResultModal.js';
 import State from './model/State.js';
 
 //classNames
-import { PRICE_FORM, LOTTO_SECTION, LOTTO_FORM } from './constants/selectTarget.js';
+import { PRICE_FORM, LOTTO_SECTION, LOTTO_FORM, LOTTO_MODAL } from './constants/selectTarget.js';
 
 import { $ } from './util/dom.js';
 
@@ -28,13 +28,17 @@ function App($target) {
           </div>
         </div>
       </div>
-    ${ResultModal()}
+    <template class="${LOTTO_MODAL}"></template>
     `.trim();
 
   PriceForm($(PRICE_FORM, $app), { onSubmit: state.eventHandler.purchaseLotto });
   LottoSection($(LOTTO_SECTION, $app), { onSwitch: state.eventHandler.toggleDisplayLottoNumbers });
   LottoForm($(LOTTO_FORM, $app), {
     onSubmit: state.eventHandler.displayWinningResultModal,
+  });
+  // TODO: Lotto modal 기능 - 당첨 결과 노출 및 초기화
+  ResultModal($(LOTTO_MODAL, $app), {
+    onClick: () => {},
   });
 
   $target.replaceWith($app);
