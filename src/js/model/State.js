@@ -3,7 +3,7 @@ import LottoModel from './LottoModel.js';
 
 import { LOTTO_PURCHASE_UNIT } from '../constants/unit.js';
 import { PRICE_FORM__INPUT, LOTTO_SECTION } from '../constants/selectTarget.js';
-import { $ } from '../util/dom.js';
+import { $, $$ } from '../util/dom.js';
 
 export default class State {
   #priceModel;
@@ -15,8 +15,8 @@ export default class State {
 
   eventHandler = {
     purchaseLotto: (e) => {
+      e.preventDefault();
       try {
-        e.preventDefault();
         const inputPrice = Number($(PRICE_FORM__INPUT).value);
         PriceModel.validators.isValidPrice(inputPrice);
         this.#priceModel.updatePrice(inputPrice);
@@ -27,6 +27,18 @@ export default class State {
     },
     toggleDisplayLottoNumbers: () => {
       this.#lottoModel.toggleLottoTicketsNumbers();
+    },
+    displayWinningResultModal: (e) => {
+      e.preventDefault();
+      try {
+        const winningNumbers = [];
+        $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
+          winningNumbers.push($el.value);
+        });
+        LottoModel.validators.isDuplicatedWinningNumber(inputPrice);
+      } catch (err) {
+        alert(err.message);
+      }
     },
   };
 

@@ -13,3 +13,6 @@ export const LOTTO_NUMBERS_TOGGLE__LABEL = 'lotto-numbers-toggle__label';
 
 // lotto form
 export const LOTTO_FORM = 'lotto-form';
+export const LOTTO_FORM__WINNING_NUMBER = 'lotto-form__winning-number';
+export const LOTTO_FORM__BUTTON = 'lotto-form__button';
+

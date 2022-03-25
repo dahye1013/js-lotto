@@ -2,11 +2,12 @@ import { LOTTO_NUMBER_SIZE, LOTTO_MAX_RANGE, LOTTO_PURCHASE_MAX_QUANTITY } from 
 import { ERR_MESSAGE } from '../constants/alertMessage.js';
 import {
   LOTTO_SECTION,
-  LOTTO_FORM,
   LOTTO_SECTION__LABEL,
   LOTTO_SECTION_TICKETS,
   LOTTO_SECTION__TICKET,
-  LOTTO_SECTION__TICKET__NUMBERS,
+  LOTTO_FORM,
+  LOTTO_FORM__BUTTON,
+  LOTTO_FORM__WINNING_NUMBER,
 } from '../constants/selectTarget.js';
 import { $, $$ } from '../util/dom.js';
 
@@ -23,6 +24,9 @@ export default class LottoModel {
   static validators = {
     isValidQuantity: (totalQuantity) => {
       if (totalQuantity > LOTTO_PURCHASE_MAX_QUANTITY) throw new Error(ERR_MESSAGE.OVER_LIMIT_QUANTITY);
+    },
+    isDuplicated: (inputNumbers) => {
+      if (new Set(inputNumbers).size < LOTTO_NUMBER_SIZE) throw new Error(ERR_MESSAGE.DUPLICATED_NUMBERS);
     },
   };
 
@@ -51,6 +55,14 @@ export default class LottoModel {
 
   toggleLottoTicketsNumbers() {
     $(LOTTO_SECTION_TICKETS).classList.toggle('hidden');
+  }
+
+  showLottoWinningResult() {
+    const winningNumbers = [];
+    $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
+      winningNumbers.push($el.value);
+    });
+    this.#winningNumbers.setWinningNumbers(winningNumbers);
   }
 
   get ticketsHtml() {
@@ -99,7 +111,16 @@ class LottoWinningNumbers {
   #bonusNumber;
 
   constructor() {
-    this.#winningNumbers = Array(LOTTO_NUMBER_SIZE).fill('');
+    this.#winningNumbers = Array(LOTTO_NUMBER_SIZE).fill(undefined);
     this.#bonusNumber = '';
+  }
+
+  setWinningNumbers(inputWinningNumbers) {
+    try {
+      LottoWinningNumbers.validators.isDuplicated(inputWinningNumbers);
+      this.#winningNumbers = inputWinningNumbers;
+    } catch (e) {
+      alert(e.message);
+    }
   }
 }
