@@ -71,10 +71,10 @@ class LottoTicket {
 
   constructor(i) {
     this.#id = Date.now() + i || 0;
-    this.#ticketNumbers = this.randomGenerator();
+    this.#ticketNumbers = this.generateTicketNumbers();
   }
 
-  randomGenerator() {
+  generateTicketNumbers() {
     const numbers = new Set();
 
     while (numbers.size < LOTTO_NUMBER_SIZE) {
