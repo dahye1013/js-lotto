@@ -18,4 +18,4 @@ export const LOTTO_FORM__BUTTON = 'lotto-form__button';
 
 // lotto result modal
 export const LOTTO_MODAL = 'lotto-modal';
-
+export const LOTTO_MODAL__CLOSE = 'lotto-modal__close';

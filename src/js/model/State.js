@@ -42,6 +42,10 @@ export default class State {
         console.log(err);
       }
     },
+    closeWinningResultModal: (e) => {
+      e.preventDefault();
+      $(LOTTO_MODAL).classList.toggle('open');
+    },
   };
 
   generateLotto(price) {

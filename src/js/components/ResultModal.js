@@ -1,9 +1,10 @@
-import { LOTTO_MODAL } from '../constants/selectTarget.js';
+import { LOTTO_MODAL, LOTTO_MODAL__CLOSE } from '../constants/selectTarget.js';
+import { $ } from '../util/dom.js';
 //TODO: - STEP2
-const ResultModal = ($parent, { onclick }) => {
+const ResultModal = ($parent, { onClick }) => {
   const template = `<div class="modal ${LOTTO_MODAL}">
         <div class="modal-inner p-10">
-          <div class="modal-close">
+          <div class="modal-close ${LOTTO_MODAL__CLOSE}">
             <svg viewbox="0 0 40 40">
               <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
             </svg>
@@ -57,6 +58,7 @@ const ResultModal = ($parent, { onclick }) => {
 
   const $el = document.createElement('div');
   $el.innerHTML = template;
+  $(LOTTO_MODAL__CLOSE, $el).addEventListener('click', onClick);
   $parent.replaceWith($el);
 };
 
