@@ -1,5 +1,6 @@
 import { LOTTO_NUMBER_SIZE, LOTTO_MAX_RANGE, LOTTO_PURCHASE_MAX_QUANTITY } from '../constants/unit.js';
 import { ERR_MESSAGE } from '../constants/alertMessage.js';
+import { PRIZE } from '../constants/prize.js';
 import {
   LOTTO_SECTION,
   LOTTO_SECTION__LABEL,
@@ -33,7 +34,6 @@ export default class LottoModel {
   createLotto(quantity) {
     this.#quantity = quantity;
     this.#tickets = Array.from(Array(this.#quantity), (_, i) => new LottoTicket((i += 1)));
-    this.#winningNumbers = new LottoWinningNumbers();
   }
 
   addLotto(quantity) {
@@ -57,12 +57,10 @@ export default class LottoModel {
     $(LOTTO_SECTION_TICKETS).classList.toggle('hidden');
   }
 
-  showLottoWinningResult() {
-    const winningNumbers = [];
-    $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
-      winningNumbers.push($el.value);
+  calculateWinningResult(input) {
+    this.#tickets.forEach((ticket) => {
+      ticket.checkTheWinningResult(input);
     });
-    this.#winningNumbers.setWinningNumbers(winningNumbers);
   }
 
   get ticketsHtml() {
@@ -75,15 +73,39 @@ export default class LottoModel {
   get quantity() {
     return this.#quantity;
   }
+
+  get lottoBenefit() {
+    return this.#tickets.reduce((acc, cur) => acc + Number(cur.lottoPrize || 0), 0);
+  }
+  get tickets() {
+    return this.#tickets;
+  }
 }
 
 class LottoTicket {
   #id;
   #ticketNumbers;
+  #matchedCount;
+  #lottoRank;
+  #lottoPrize;
 
   constructor(i) {
     this.#id = Date.now() + i || 0;
     this.#ticketNumbers = this.generateTicketNumbers();
+    this.#matchedCount = 0;
+  }
+
+  checkTheWinningResult({ winningNumbers, bonusNumber }) {
+    this.#matchedCount = 0;
+    winningNumbers.forEach((winningNumber) => {
+      if (this.#ticketNumbers.includes(Number(winningNumber))) {
+        this.#matchedCount += 1;
+      }
+    });
+
+    const isBonus = this.#matchedCount === 5 && this.#ticketNumbers.includes(Number(bonusNumber));
+    this.#lottoRank = isBonus ? 'BONUS' : this.#matchedCount;
+    this.#lottoPrize = PRIZE[this.#lottoRank];
   }
 
   generateTicketNumbers() {
@@ -104,23 +126,8 @@ class LottoTicket {
   get ticketNumbers() {
     return this.#ticketNumbers;
   }
-}
 
-class LottoWinningNumbers {
-  #winningNumbers;
-  #bonusNumber;
-
-  constructor() {
-    this.#winningNumbers = Array(LOTTO_NUMBER_SIZE).fill(undefined);
-    this.#bonusNumber = '';
-  }
-
-  setWinningNumbers(inputWinningNumbers) {
-    try {
-      LottoWinningNumbers.validators.isDuplicated(inputWinningNumbers);
-      this.#winningNumbers = inputWinningNumbers;
-    } catch (e) {
-      alert(e.message);
-    }
+  get lottoPrize() {
+    return this.#lottoPrize;
   }
 }

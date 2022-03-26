@@ -18,9 +18,12 @@ export default class State {
       e.preventDefault();
       try {
         const inputPrice = Number($(PRICE_FORM__INPUT).value);
+
         PriceModel.validators.isValidPrice(inputPrice);
+
         this.#priceModel.updatePrice(inputPrice);
         this.generateLotto(inputPrice);
+
       } catch (err) {
         alert(err.message);
       }
@@ -31,15 +34,22 @@ export default class State {
     displayWinningResultModal: (e) => {
       e.preventDefault();
       try {
-        const inputNumbers = [];
+        const winningNumbers = [];
+        let bonusNumber = 0;
+
         $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
-          inputNumbers.push($el.value);
+          winningNumbers.push($el.value);
         });
-        LottoModel.validators.isDuplicatedWinningNumber(inputNumbers);
+
+        LottoModel.validators.isDuplicatedWinningNumber(winningNumbers);
+
+        bonusNumber = $('bonus-number').value;
+        this.#lottoModel.calculateWinningResult({ winningNumbers, bonusNumber });
+
         $(LOTTO_MODAL).classList.add('open');
+        
       } catch (err) {
         alert(err.message);
-        console.log(err);
       }
     },
     closeWinningResultModal: (e) => {
@@ -52,6 +62,7 @@ export default class State {
     try {
       const quantity = price / LOTTO_PURCHASE_UNIT;
       const totalQuantity = this.#lottoModel?.quantity + quantity;
+
       LottoModel.validators.isValidQuantity(totalQuantity);
 
       if (this.#lottoModel) {
@@ -60,6 +71,7 @@ export default class State {
       }
 
       this.#lottoModel = new LottoModel(quantity);
+
     } catch (e) {
       alert(e.message);
     }
@@ -71,5 +83,9 @@ export default class State {
 
   get lottoModel() {
     return this.#lottoModel;
+  }
+
+  get lottoBenefitRate() {
+   return this.lottoModel.lottoBenefit / this.priceModel.totalPurchasePrice;
   }
 }
