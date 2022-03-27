@@ -32,12 +32,12 @@ function App($target) {
     `.trim();
 
   PriceForm($(PRICE_FORM, $app), { onPurchase: state.purchaseLotto });
-  LottoSection($(LOTTO_SECTION, $app), { onSwitch: state.toggleDisplayLottoNumbers });
+  LottoSection($(LOTTO_SECTION, $app), { toggleDisplay: state.toggleDisplayLottoNumbers });
   LottoForm($(LOTTO_FORM, $app), {
-    onSubmit: state.displayWinningResultModal,
+    onDisplayResult: state.displayWinningResultModal,
   });
   ResultModal($(LOTTO_MODAL, $app), {
-    onClick: state.closeWinningResultModal,
+    closeModal: state.closeWinningResultModal,
     reStart: state.initLotto,
   });
 

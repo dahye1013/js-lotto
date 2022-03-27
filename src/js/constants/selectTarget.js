@@ -23,4 +23,3 @@ export const LOTTO_MODAL__CLOSE = 'lotto-modal__close';
 export const LOTTO_MODAL_BENEFIT_RATE = 'lotto-modal-benefit-rate';
 export const LOTTO_MODAL_WINNING_RESULT = 'lotto-modal-winning-result';
 export const LOTTO_MODAL__RESTART = 'lotto-modal__reStart';
-
