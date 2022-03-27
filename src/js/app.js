@@ -31,12 +31,11 @@ function App($target) {
     <template class="${LOTTO_MODAL}"></template>
     `.trim();
 
-  PriceForm($(PRICE_FORM, $app), { onSubmit: state.purchaseLotto });
+  PriceForm($(PRICE_FORM, $app), { onPurchase: state.purchaseLotto });
   LottoSection($(LOTTO_SECTION, $app), { onSwitch: state.toggleDisplayLottoNumbers });
   LottoForm($(LOTTO_FORM, $app), {
     onSubmit: state.displayWinningResultModal,
   });
-  // TODO: Lotto modal 기능 - 당첨 결과 노출 및 초기화
   ResultModal($(LOTTO_MODAL, $app), {
     onClick: state.closeWinningResultModal,
     reStart: state.initLotto,

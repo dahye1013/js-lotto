@@ -8,7 +8,7 @@ import {
 
 import { LOTTO_NUMBER_SIZE } from '../constants/unit.js';
 
-const LottoForm = ($parent, { onSubmit }) => {
+const LottoForm = ($parent, { onDisplayResult }) => {
   const inputTemplate = `<input
                     type="number"
                     min="1"
@@ -46,7 +46,7 @@ const LottoForm = ($parent, { onSubmit }) => {
   const $el = document.createElement('div');
   $el.innerHTML = template;
   $parent.replaceWith($el);
-  $el.addEventListener('submit', onSubmit);
+  $el.addEventListener('submit', onDisplayResult);
 };
 
 export default LottoForm;

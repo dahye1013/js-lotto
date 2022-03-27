@@ -9,7 +9,7 @@ import { $ } from '../util/dom.js';
 import { PRIZE_TYPES } from '../constants/prize.js';
 
 //TODO: - STEP2 : 다시 시작하기 (초기화)
-const ResultModal = ($parent, { onClick, reStart }) => {
+const ResultModal = ($parent, { closeModal, reStart }) => {
   const trTemplate = (prize) => `<tr class="text-center ${LOTTO_MODAL_WINNING_RESULT}">
                   <td class="p-3">${prize.text}</td>
                   <td class="p-3">${prize.cost.toLocaleString()}</td>
@@ -48,7 +48,7 @@ const ResultModal = ($parent, { onClick, reStart }) => {
 
   const $el = document.createElement('div');
   $el.innerHTML = template;
-  $(LOTTO_MODAL__CLOSE, $el).addEventListener('click', onClick);
+  $(LOTTO_MODAL__CLOSE, $el).addEventListener('click', closeModal);
   $(LOTTO_MODAL__RESTART, $el).addEventListener('click', reStart);
   $parent.replaceWith($el);
 };
