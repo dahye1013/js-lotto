@@ -3,6 +3,8 @@ import LottoModel from './LottoModel.js';
 
 import { LOTTO_PURCHASE_UNIT } from '../constants/unit.js';
 import {
+  LOTTO_SECTION,
+  LOTTO_FORM,
   PRICE_FORM__INPUT,
   LOTTO_MODAL,
   LOTTO_FORM__WINNING_NUMBER,
@@ -28,7 +30,6 @@ export default class State {
         const inputPrice = Number($(PRICE_FORM__INPUT).value);
 
         PriceModel.validators.isValidPrice(inputPrice);
-
         this.#priceModel.updatePrice(inputPrice);
         this.generateLotto(inputPrice);
       } catch (err) {
@@ -58,7 +59,7 @@ export default class State {
         $$(LOTTO_MODAL_WINNING_RESULT).forEach(($el, i) => {
           $el.lastElementChild.textContent = `${this.lottoModel.getWinningQuantityByRank(prizeKeys[i])}개`;
         });
-        $(LOTTO_MODAL).classList.add('open');
+        $(LOTTO_MODAL).classList.toggle('open');
         $(LOTTO_MODAL_BENEFIT_RATE).textContent = `${this.lottoBenefitRate}%`;
       } catch (err) {
         alert(err.message);
@@ -74,7 +75,6 @@ export default class State {
     try {
       const quantity = price / LOTTO_PURCHASE_UNIT;
       const totalQuantity = this.#lottoModel?.quantity + quantity;
-
       LottoModel.validators.isValidQuantity(totalQuantity);
 
       if (this.#lottoModel) {
@@ -87,6 +87,19 @@ export default class State {
       alert(e.message);
     }
   }
+
+  initLotto = () => {
+    this.#priceModel.initPrice();
+    this.#lottoModel = undefined;
+    $(LOTTO_SECTION).hidden = true;
+    $(LOTTO_FORM).hidden = true;
+    $(LOTTO_MODAL).classList.toggle('open');
+    $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
+      $el.value = '';
+    });
+    $(LOTTO_SECTION_TICKETS).classList.add('hidden');
+    $('bonus-number').value = '';
+  };
 
   get priceModel() {
     return this.#priceModel;

@@ -6,12 +6,14 @@ import { $ } from '../util/dom.js';
 export default class PriceModel {
   #totalPurchasePrice;
 
-  constructor() {
-    this.initPrice();
-  }
-
   initPrice() {
     this.#totalPurchasePrice = '';
+    $(PRICE_FORM__INPUT).value = '';
+  }
+
+  updatePrice(newPrice) {
+    this.#totalPurchasePrice = newPrice;
+    $(PRICE_FORM__INPUT).value = '';
   }
 
   static validators = {
@@ -22,11 +24,6 @@ export default class PriceModel {
       if (price % LOTTO_PURCHASE_UNIT !== 0) throw new Error(ERR_MESSAGE.NOT_DIVIDED_BY_UNIT);
     },
   };
-
-  updatePrice(newPrice) {
-    this.#totalPurchasePrice = newPrice;
-    $(PRICE_FORM__INPUT).value = '';
-  }
 
   get totalPurchasePrice() {
     return this.#totalPurchasePrice;

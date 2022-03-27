@@ -39,6 +39,7 @@ function App($target) {
   // TODO: Lotto modal 기능 - 당첨 결과 노출 및 초기화
   ResultModal($(LOTTO_MODAL, $app), {
     onClick: state.eventHandler.closeWinningResultModal,
+    reStart: state.initLotto,
   });
 
   $target.replaceWith($app);

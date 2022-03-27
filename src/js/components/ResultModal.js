@@ -3,12 +3,13 @@ import {
   LOTTO_MODAL__CLOSE,
   LOTTO_MODAL_BENEFIT_RATE,
   LOTTO_MODAL_WINNING_RESULT,
+  LOTTO_MODAL__RESTART,
 } from '../constants/selectTarget.js';
 import { $ } from '../util/dom.js';
 import { PRIZE_TYPES } from '../constants/prize.js';
 
-//TODO: - STEP2
-const ResultModal = ($parent, { onClick }) => {
+//TODO: - STEP2 : 다시 시작하기 (초기화)
+const ResultModal = ($parent, { onClick, reStart }) => {
   const trTemplate = (prize) => `<tr class="text-center ${LOTTO_MODAL_WINNING_RESULT}">
                   <td class="p-3">${prize.text}</td>
                   <td class="p-3">${prize.cost.toLocaleString()}</td>
@@ -40,7 +41,7 @@ const ResultModal = ($parent, { onClick }) => {
           </div>
           <p class="text-center font-bold ${LOTTO_MODAL_BENEFIT_RATE}">당신의 총 수익률은 %입니다.</p>
           <div class="d-flex justify-center mt-5">
-            <button type="button" class="btn btn-cyan">다시 시작하기</button>
+            <button type="button" class="btn btn-cyan ${LOTTO_MODAL__RESTART}">다시 시작하기</button>
           </div>
         </div>
       </div>`;
@@ -48,6 +49,7 @@ const ResultModal = ($parent, { onClick }) => {
   const $el = document.createElement('div');
   $el.innerHTML = template;
   $(LOTTO_MODAL__CLOSE, $el).addEventListener('click', onClick);
+  $(LOTTO_MODAL__RESTART, $el).addEventListener('click', reStart);
   $parent.replaceWith($el);
 };
 
