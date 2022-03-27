@@ -102,7 +102,7 @@ class LottoTicket {
     });
 
     const isBonus = this.#matchedCount === 5 && this.#ticketNumbers.includes(Number(bonusNumber));
-    this.#lottoRank = isBonus ? 'BONUS' : String(this.#matchedCount);
+    this.#lottoRank = isBonus ? 'RANK-BONUS' : `RANK-${this.#matchedCount}`;
     this.#lottoPrize = Number(PRIZE_TYPES[this.#lottoRank]?.cost) || 0;
   }
 
