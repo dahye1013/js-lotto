@@ -24,52 +24,53 @@ export default class State {
     this.#priceModel = new PriceModel();
   }
 
-  eventHandler = {
-    purchaseLotto: (e) => {
-      e.preventDefault();
-      try {
-        const inputPrice = Number($(PRICE_FORM__INPUT).value);
+  displayWinningResultModal = (e) => {
+    e.preventDefault();
+    try {
+      const winningNumbers = [];
+      let bonusNumber = 0;
 
-        PriceModel.validators.isValidPrice(inputPrice);
-        this.#priceModel.updatePrice(inputPrice);
-        this.generateLotto(inputPrice);
-      } catch (err) {
-        alert(err.message);
-      }
-    },
-    toggleDisplayLottoNumbers: () => {
-      this.#lottoModel.toggleLottoTicketsNumbers();
-    },
-    displayWinningResultModal: (e) => {
-      e.preventDefault();
-      try {
-        const winningNumbers = [];
-        let bonusNumber = 0;
+      $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
+        winningNumbers.push($el.value);
+      });
 
-        $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
-          winningNumbers.push($el.value);
-        });
+      LottoModel.validators.isDuplicatedWinningNumber(winningNumbers);
 
-        LottoModel.validators.isDuplicatedWinningNumber(winningNumbers);
+      bonusNumber = $(LOTTO_FORM__BONUS_NUMBER).value;
+      this.#lottoModel.calculateWinningResult({ winningNumbers, bonusNumber });
 
-        bonusNumber = $(LOTTO_FORM__BONUS_NUMBER).value;
-        this.#lottoModel.calculateWinningResult({ winningNumbers, bonusNumber });
+      const prizeKeys = Object.keys(PRIZE_TYPES);
 
-        const prizeKeys = Object.keys(PRIZE_TYPES);
-
-        $$(LOTTO_MODAL_WINNING_RESULT).forEach(($el, i) => {
-          $el.lastElementChild.textContent = `${this.lottoModel.getWinningQuantityByRank(prizeKeys[i])}개`;
-        });
-        $(LOTTO_MODAL).classList.toggle('open');
-        $(LOTTO_MODAL_BENEFIT_RATE).textContent = `${this.lottoBenefitRate}%`;
-      } catch (err) {
-        alert(err.message);
-      }
-    },
-    closeWinningResultModal: (e) => {
-      e.preventDefault();
+      $$(LOTTO_MODAL_WINNING_RESULT).forEach(($el, i) => {
+        $el.lastElementChild.textContent = `${this.lottoModel.getWinningQuantityByRank(prizeKeys[i])}개`;
+      });
       $(LOTTO_MODAL).classList.toggle('open');
-    },
+      $(LOTTO_MODAL_BENEFIT_RATE).textContent = `${this.lottoBenefitRate}%`;
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  purchaseLotto = (e) => {
+    e.preventDefault();
+    try {
+      const inputPrice = Number($(PRICE_FORM__INPUT).value);
+
+      PriceModel.validators.isValidPrice(inputPrice);
+      this.#priceModel.updatePrice(inputPrice);
+      this.generateLotto(inputPrice);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  toggleDisplayLottoNumbers = () => {
+    this.#lottoModel.toggleLottoTicketsNumbers();
+  };
+
+  closeWinningResultModal = (e) => {
+    e.preventDefault();
+    $(LOTTO_MODAL).classList.toggle('open');
   };
 
   generateLotto(price) {
