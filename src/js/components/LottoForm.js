@@ -1,8 +1,12 @@
 //TODO: - STEP2
-import { LOTTO_FORM, LOTTO_FORM__WINNING_NUMBER, LOTTO_FORM__BUTTON } from '../constants/selectTarget.js';
+import {
+  LOTTO_FORM,
+  LOTTO_FORM__WINNING_NUMBER,
+  LOTTO_FORM__BUTTON,
+  LOTTO_FORM__BONUS_NUMBER,
+} from '../constants/selectTarget.js';
 
 import { LOTTO_NUMBER_SIZE } from '../constants/unit.js';
-import { $ } from '../util/dom.js';
 
 const LottoForm = ($parent, { onSubmit }) => {
   const inputTemplate = `<input
@@ -27,7 +31,7 @@ const LottoForm = ($parent, { onSubmit }) => {
               <div class="bonus-number-container flex-grow">
                 <h4 class="mt-0 mb-3 text-center">보너스 번호</h4>
                 <div class="d-flex justify-center">
-                  <input type="number" class="bonus-number text-center" />
+                  <input type="number" class="${LOTTO_FORM__BONUS_NUMBER} text-center" required/>
                 </div>
               </div>
             </div>

@@ -10,6 +10,7 @@ import {
   LOTTO_FORM__WINNING_NUMBER,
   LOTTO_MODAL_BENEFIT_RATE,
   LOTTO_MODAL_WINNING_RESULT,
+  LOTTO_FORM__BONUS_NUMBER,
 } from '../constants/selectTarget.js';
 import { $, $$ } from '../util/dom.js';
 
@@ -51,7 +52,7 @@ export default class State {
 
         LottoModel.validators.isDuplicatedWinningNumber(winningNumbers);
 
-        bonusNumber = $('bonus-number').value;
+        bonusNumber = $(LOTTO_FORM__BONUS_NUMBER).value;
         this.#lottoModel.calculateWinningResult({ winningNumbers, bonusNumber });
 
         const prizeKeys = Object.keys(PRIZE_TYPES);
@@ -97,8 +98,7 @@ export default class State {
     $$(LOTTO_FORM__WINNING_NUMBER).forEach(($el) => {
       $el.value = '';
     });
-    $(LOTTO_SECTION_TICKETS).classList.add('hidden');
-    $('bonus-number').value = '';
+    $(LOTTO_FORM__BONUS_NUMBER).value = '';
   };
 
   get priceModel() {
