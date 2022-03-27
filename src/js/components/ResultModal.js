@@ -1,7 +1,20 @@
-import { LOTTO_MODAL, LOTTO_MODAL__CLOSE } from '../constants/selectTarget.js';
+import {
+  LOTTO_MODAL,
+  LOTTO_MODAL__CLOSE,
+  LOTTO_MODAL_BENEFIT_RATE,
+  LOTTO_MODAL_WINNING_RESULT,
+} from '../constants/selectTarget.js';
 import { $ } from '../util/dom.js';
+import { PRIZE_TYPES } from '../constants/prize.js';
+
 //TODO: - STEP2
 const ResultModal = ($parent, { onClick }) => {
+  const trTemplate = (prize) => `<tr class="text-center ${LOTTO_MODAL_WINNING_RESULT}">
+                  <td class="p-3">${prize.text}</td>
+                  <td class="p-3">${prize.cost.toLocaleString()}</td>
+                  <td class="p-3">0개</td>
+                </tr>`;
+
   const template = `<div class="modal ${LOTTO_MODAL}">
         <div class="modal-inner p-10">
           <div class="modal-close ${LOTTO_MODAL__CLOSE}">
@@ -21,35 +34,11 @@ const ResultModal = ($parent, { onClick }) => {
                 </tr>
               </thead>
               <tbody>
-                <tr class="text-center">
-                  <td class="p-3">3개</td>
-                  <td class="p-3">5,000</td>
-                  <td class="p-3">n개</td>
-                </tr>
-                <tr class="text-center">
-                  <td class="p-3">4개</td>
-                  <td class="p-3">50,000</td>
-                  <td class="p-3">n개</td>
-                </tr>
-                <tr class="text-center">
-                  <td class="p-3">5개</td>
-                  <td class="p-3">1,500,000</td>
-                  <td class="p-3">n개</td>
-                </tr>
-                <tr class="text-center">
-                  <td class="p-3">5개 + 보너스볼</td>
-                  <td class="p-3">30,000,000</td>
-                  <td class="p-3">n개</td>
-                </tr>
-                <tr class="text-center">
-                  <td class="p-3">6개</td>
-                  <td class="p-3">2,000,000,000</td>
-                  <td class="p-3">n개</td>
-                </tr>
+                ${Object.values(PRIZE_TYPES).map(trTemplate).join('')}
               </tbody>
             </table>
           </div>
-          <p class="text-center font-bold">당신의 총 수익률은 %입니다.</p>
+          <p class="text-center font-bold ${LOTTO_MODAL_BENEFIT_RATE}">당신의 총 수익률은 %입니다.</p>
           <div class="d-flex justify-center mt-5">
             <button type="button" class="btn btn-cyan">다시 시작하기</button>
           </div>

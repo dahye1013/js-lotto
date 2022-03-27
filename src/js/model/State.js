@@ -2,8 +2,16 @@ import PriceModel from './PriceModel.js';
 import LottoModel from './LottoModel.js';
 
 import { LOTTO_PURCHASE_UNIT } from '../constants/unit.js';
-import { PRICE_FORM__INPUT, LOTTO_MODAL, LOTTO_FORM__WINNING_NUMBER } from '../constants/selectTarget.js';
+import {
+  PRICE_FORM__INPUT,
+  LOTTO_MODAL,
+  LOTTO_FORM__WINNING_NUMBER,
+  LOTTO_MODAL_BENEFIT_RATE,
+  LOTTO_MODAL_WINNING_RESULT,
+} from '../constants/selectTarget.js';
 import { $, $$ } from '../util/dom.js';
+
+import { PRIZE_TYPES } from '../constants/prize.js';
 
 export default class State {
   #priceModel;
@@ -23,7 +31,6 @@ export default class State {
 
         this.#priceModel.updatePrice(inputPrice);
         this.generateLotto(inputPrice);
-
       } catch (err) {
         alert(err.message);
       }
@@ -46,8 +53,13 @@ export default class State {
         bonusNumber = $('bonus-number').value;
         this.#lottoModel.calculateWinningResult({ winningNumbers, bonusNumber });
 
+        const prizeKeys = Object.keys(PRIZE_TYPES);
+
+        $$(LOTTO_MODAL_WINNING_RESULT).forEach(($el, i) => {
+          $el.lastElementChild.textContent = `${this.lottoModel.getWinningQuantityByRank(prizeKeys[i])}개`;
+        });
         $(LOTTO_MODAL).classList.add('open');
-        
+        $(LOTTO_MODAL_BENEFIT_RATE).textContent = `${this.lottoBenefitRate}%`;
       } catch (err) {
         alert(err.message);
       }
@@ -71,7 +83,6 @@ export default class State {
       }
 
       this.#lottoModel = new LottoModel(quantity);
-
     } catch (e) {
       alert(e.message);
     }
@@ -86,6 +97,6 @@ export default class State {
   }
 
   get lottoBenefitRate() {
-   return this.lottoModel.lottoBenefit / this.priceModel.totalPurchasePrice;
+    return this.lottoModel.lottoBenefit / this.priceModel.totalPurchasePrice;
   }
 }

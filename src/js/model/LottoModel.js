@@ -1,21 +1,18 @@
 import { LOTTO_NUMBER_SIZE, LOTTO_MAX_RANGE, LOTTO_PURCHASE_MAX_QUANTITY } from '../constants/unit.js';
 import { ERR_MESSAGE } from '../constants/alertMessage.js';
-import { PRIZE } from '../constants/prize.js';
+import { PRIZE_TYPES } from '../constants/prize.js';
 import {
   LOTTO_SECTION,
   LOTTO_SECTION__LABEL,
   LOTTO_SECTION_TICKETS,
   LOTTO_SECTION__TICKET,
   LOTTO_FORM,
-  LOTTO_FORM__BUTTON,
-  LOTTO_FORM__WINNING_NUMBER,
 } from '../constants/selectTarget.js';
-import { $, $$ } from '../util/dom.js';
+import { $ } from '../util/dom.js';
 
 export default class LottoModel {
   #tickets;
   #quantity;
-  #winningNumbers;
 
   constructor(quantity) {
     this.createLotto(quantity);
@@ -75,10 +72,11 @@ export default class LottoModel {
   }
 
   get lottoBenefit() {
-    return this.#tickets.reduce((acc, cur) => acc + Number(cur.lottoPrize || 0), 0);
+    return this.#tickets.reduce((acc, cur) => acc + (cur.lottoPrize || 0), 0);
   }
-  get tickets() {
-    return this.#tickets;
+
+  getWinningQuantityByRank(rank) {
+    return this.#tickets.filter((ticket) => ticket.lottoRank === rank).length;
   }
 }
 
@@ -104,8 +102,8 @@ class LottoTicket {
     });
 
     const isBonus = this.#matchedCount === 5 && this.#ticketNumbers.includes(Number(bonusNumber));
-    this.#lottoRank = isBonus ? 'BONUS' : this.#matchedCount;
-    this.#lottoPrize = PRIZE[this.#lottoRank];
+    this.#lottoRank = isBonus ? 'BONUS' : String(this.#matchedCount);
+    this.#lottoPrize = Number(PRIZE_TYPES[this.#lottoRank]?.cost) || 0;
   }
 
   generateTicketNumbers() {
@@ -129,5 +127,8 @@ class LottoTicket {
 
   get lottoPrize() {
     return this.#lottoPrize;
+  }
+  get lottoRank() {
+    return this.#lottoRank;
   }
 }
